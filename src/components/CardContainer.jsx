@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React  from "react";
 import Card from "./Card";
 
 const CardContainer = (props) => {
 
     const container = {
+        boxSizing: 'border-box',
         height: '150px',
         width: '100px',
-        padding: '5px',
         margin: '5px',
         borderStyle: 'solid',
         borderRadius: '10px',
@@ -14,8 +14,14 @@ const CardContainer = (props) => {
     };
 
     return <div style={container}>
-        {props.cards.map((card) => {
-            if (props.cards.length > 1) {return <Card key={card} color={card.color} visibility={card.visibility} suit={card.suit} value={card.value}/>}
+        {props.cards.map((card, index) => {
+            if (card !== null)
+                return <Card
+                    key={card.toString().concat(index)}
+                card={card}
+                gameState={props.gameState}
+                setGameState={props.setGameState}
+            />;
             else return null;
         },)}
     </div>;

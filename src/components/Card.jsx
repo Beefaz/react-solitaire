@@ -3,8 +3,8 @@ import React, {useState} from "react";
 const Card = (props) => {
     const [bordercolor, setBorderColor] = useState(false);
     const cardStyle = {
-        height: '150px',
-        width: '100px',
+        height: '100%',
+        width: '100%',
         padding: '5px',
         margin: '5px',
         borderStyle: 'solid',
@@ -21,11 +21,11 @@ const Card = (props) => {
     };
     const clickHandler = () =>{
       setBorderColor(!bordercolor);
-      props.setCardPickedUp({suit: props.suit, value: props.value});
+      //props.setCardPickedUp({suit: props.suit, value: props.value});
     };
     return <div style={cardStyle}
                 onClick={clickHandler}>
-        <div style={cardLabelStyle}>{props.suit}{props.value}</div>
+        <div style={cardLabelStyle}>{props.card.value}{props.card.color}{props.card.suit}</div>
     </div>;
 };
 export default Card;
