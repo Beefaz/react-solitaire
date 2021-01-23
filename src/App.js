@@ -18,7 +18,6 @@ const deck = cardValues.map(value => setcard(value, 'red', 'hearts', false))
     .concat(cardValues.map(value => setcard(value, 'black', 'clubs', false)));
 
 
-
 const shuffleDeck = (deckToShuffle) => {
     const wholeDeck = [...deckToShuffle];
     const randomDeck = [];
@@ -58,17 +57,18 @@ const App = () => {
         const startGame = () => {
             const newShuffledDeck = shuffleDeck([...deck]);     //gets fresh random card deck
             let i = 1;
-            for (let [key] of Object.entries(gameState.playableCards)) {     //iterates over columns, fills assigned array with increasing number of cards
+            for (let [key] of Object.entries(gameState.playableCards)) {     //iterates over columns, fills assigned tempCardArray with incremented number of cards
                 const tempCardArray = [];
-                while (tempCardArray.length<i){
+                while (tempCardArray.length < i) {
                     tempCardArray.push(newShuffledDeck[0]);
                     newShuffledDeck.shift();
                 }
                 gameState.playableCards[key] = tempCardArray;
                 i++;
             }
-                gameState.newCards.closedCards = newShuffledDeck;               //puts remaining cards into available card spot
+            gameState.newCards.closedCards = newShuffledDeck;               //puts remaining cards into closedCards spot
             setGameState({...gameState});
+            console.table(gameState.newCards.closedCards);
         };
 
         return <div className="App">
@@ -76,9 +76,10 @@ const App = () => {
                 <button style={{position: 'absolute', top: '50px', left: '50%'}} onClick={startGame}>Start</button>
                 <div style={{display: 'flex'}}>
                     {Object.keys(gameState.newCards).map((newCardsSpot, index) => (
-                        <CardContainer key={newCardsSpot.toString().concat(index.toString())}
-                                       backgroundColor={'green'}
+                        <CardContainer backgroundColor={'green'}
+                                       expanded={false}
                                        cards={gameState.newCards[newCardsSpot]}
+                                       key={newCardsSpot}
                                        gameState={gameState}
                                        setGameState={setGameState}/>
                     ),)}
@@ -87,16 +88,18 @@ const App = () => {
                     {Object.keys(gameState.finishedCards).map((finishedCardSpot, index) => (
                         <CardContainer containerFor={finishedCardSpot}
                                        cards={gameState.finishedCards[finishedCardSpot]}
-                                       key={finishedCardSpot.toString().concat(index.toString())}
+                                       expanded={false}
+                                       key={finishedCardSpot}
                                        gameState={gameState}
                                        setGameState={setGameState}/>
                     ))}
                 </div>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
-                {Object.keys(gameState.playableCards).map((column) => (
-                    <CardContainer key={column}
-                                   cards={gameState.playableCards[column]}
+                {Object.keys(gameState.playableCards).map((column, index) => (
+                    <CardContainer cards={gameState.playableCards[column]}
+                                   expanded={true}
+                                   key={column}
                                    gameState={gameState}
                                    setGameState={setGameState}/>
                 ),)}

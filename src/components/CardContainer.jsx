@@ -2,11 +2,11 @@ import React  from "react";
 import Card from "./Card";
 
 const CardContainer = (props) => {
-
     const container = {
+        position: 'relative',
         boxSizing: 'border-box',
-        height: '150px',
-        width: '100px',
+        height: '175px',
+        width: '125px',
         margin: '5px',
         borderStyle: 'solid',
         borderRadius: '10px',
@@ -17,7 +17,9 @@ const CardContainer = (props) => {
         {props.cards.map((card, index) => {
             if (card !== null)
                 return <Card
+                    expanded={props.expanded}
                     key={card.toString().concat(index)}
+                    index={index}
                 card={card}
                 gameState={props.gameState}
                 setGameState={props.setGameState}
